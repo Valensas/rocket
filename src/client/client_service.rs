@@ -27,7 +27,7 @@ impl Client {
     pub fn new(
         params: ClientParams,
         endpoints: Vec<Route>,
-        prometheus : ArcRwLockPrometheus
+        prometheus : Option<ArcRwLockPrometheus>
     ) -> Self {
         let mut custom = rocket::config::Config::release_default();
         let ip_address = params.ip_addr.parse::<Ipv4Addr>();
@@ -39,11 +39,20 @@ impl Client {
             custom.port = port.unwrap();
         }
 
-        let rocket_server = rocket
-            ::custom(custom)
-            .attach(prometheus.clone())
-            .manage(prometheus.clone())
-            .mount("/", endpoints);
+        let rocket_server =  match prometheus {
+            Some(prometheus) => {
+                rocket
+                    ::custom(custom)
+                    .attach(prometheus.clone())
+                    .manage(prometheus.clone())
+                    .mount("/", endpoints)
+            },
+            None => {
+                rocket
+                    ::custom(custom)
+                    .mount("/", endpoints)
+            }
+        };
 
         Self {
             rocket_server,
