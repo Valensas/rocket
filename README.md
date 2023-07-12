@@ -6,7 +6,7 @@ This library provides a Rocket client with the capability of metric collection f
 
 To use this library, you need to create an instance of `valensas_rocket::client::client_service::Client` and run spawn_rocket() method to launch the application.
 
-For detailed information visit: https://crates.io/crates/valensas-rocket 
+For detailed information visit: https://docs.rs/valensas-rocket 
 
 ### Installation
 
@@ -14,4 +14,4 @@ Add the following to your `Cargo.toml` file:
 
 ```toml
 [dependencies]
-valensas_rocket = "0.1.0"
+valensas-rocket = "0.1.0"
