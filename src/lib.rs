@@ -49,6 +49,6 @@
 //! }
 //! ```
 //!
-//! The example demonstrates how to create a Rocket client using the library. It sets up a single route ("/") with a handler function (`index`). Optionally, it creates a Prometheus metrics object, sets a managed state (`SomeState`), and attaches a fairing (`SomeFairing`). The client is then launched using the `spawn_rocket` function, and the Prometheus metrics can be accessed if available (For further information about metrics, visit: https://crates.io/crates/valensas-actuator). Finally, the client awaits completion and prints a success message.
+//! The example demonstrates how to create a Rocket client using the library. It sets up a single route ("/") with a handler function (`index`). Optionally, it creates a Prometheus metrics object, sets a managed state (`SomeState`), and attaches a fairing (`SomeFairing`). The client is then launched using the `spawn_rocket` function, and the Prometheus metrics can be accessed if available (For further information about metrics, visit: [valensas-actuator](https://crates.io/crates/valensas-actuator)). Finally, the client awaits completion and prints a success message.
 
 pub mod client;

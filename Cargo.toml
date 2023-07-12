@@ -1,12 +1,12 @@
 [package]
 name = "valensas-rocket"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "A library that provides a Rocket client with the capability of metric collection for endpoints."
 license = "MIT"
 
 [dependencies]
-valensas-actuator = "0.1.0"
+valensas-actuator = "0.1.2"
 
 [dependencies.rocket]
 version = "=0.5.0-rc.3"
