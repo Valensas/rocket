@@ -2,7 +2,7 @@
 
 use std::{future::Future, net::{IpAddr, Ipv4Addr}};
 
-use mpc_prometheus::metrics::metrics::ArcRwLockPrometheus;
+use valensas_actuator::metrics::metrics::ArcRwLockPrometheus;
 use rocket::{Build, Error, Ignite, Rocket, Route, fairing::Fairing};
 
 use super::client_params::ClientParams;

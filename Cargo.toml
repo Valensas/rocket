@@ -1,13 +1,12 @@
 [package]
-name = "mpc-rocket"
+name = "valensas-rocket"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-mpc-prometheus = {git="https://github.com/can-arikan/my-rust-prometheus.git"}
-
+valensas-actuator = "0.1.0"
 [dependencies.rocket]
 version = "=0.5.0-rc.3"
 features = ["json"]
