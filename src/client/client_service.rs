@@ -1,9 +1,12 @@
 #![allow(non_snake_case)]
 
-use std::{future::Future, net::{IpAddr, Ipv4Addr}};
+use std::{
+    future::Future,
+    net::{IpAddr, Ipv4Addr},
+};
 
 use valensas_actuator::metrics::metrics::ArcRwLockPrometheus;
-use rocket::{Build, Error, Ignite, Rocket, Route, fairing::Fairing};
+use rocket::{fairing::Fairing, Build, Error, Ignite, Rocket, Route};
 
 use super::client_params::ClientParams;
 
@@ -43,18 +46,11 @@ impl Client {
         }
 
         let rocket_server = match prometheus {
-            Some(prometheus) => {
-                rocket
-                ::custom(custom)
-                    .attach(prometheus.clone())
-                    .manage(prometheus)
-                    .mount("/", endpoints)
-            }
-            None => {
-                rocket
-                ::custom(custom)
-                    .mount("/", endpoints)
-            }
+            Some(prometheus) => rocket::custom(custom)
+                .attach(prometheus.clone())
+                .manage(prometheus)
+                .mount("/", endpoints),
+            None => rocket::custom(custom).mount("/", endpoints),
         };
 
         Self {
@@ -63,17 +59,23 @@ impl Client {
         }
     }
 
-    pub fn set_manage<T>(mut self, manage: T) -> Self where T: Send + Sync + 'static {
+    pub fn set_manage<T>(mut self, manage: T) -> Self
+    where
+        T: Send + Sync + 'static,
+    {
         self.rocket_server = self.rocket_server.manage(manage);
         self
     }
 
-    pub fn set_fairing<T>(mut self, attachment: T) -> Self where T: Fairing {
+    pub fn set_fairing<T>(mut self, attachment: T) -> Self
+    where
+        T: Fairing,
+    {
         self.rocket_server = self.rocket_server.attach(attachment);
         self
     }
 
-    pub async fn spawn_rocket(self) -> impl Future<Output=Result<Rocket<Ignite>, Error>> {
+    pub async fn spawn_rocket(self) -> impl Future<Output = Result<Rocket<Ignite>, Error>> {
         let rocket = match self.rocket_server.ignite().await {
             Ok(res) => res,
             Err(err) => {
