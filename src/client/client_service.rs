@@ -1,8 +1,9 @@
 #![allow(non_snake_case)]
-use std::{ future::Future, net::{ IpAddr, Ipv4Addr }};
+
+use std::{future::Future, net::{IpAddr, Ipv4Addr}};
 
 use mpc_prometheus::metrics::metrics::ArcRwLockPrometheus;
-use rocket::{ Build, Error, Ignite, Rocket, Route, fairing::Fairing };
+use rocket::{Build, Error, Ignite, Rocket, Route, fairing::Fairing};
 
 use super::client_params::ClientParams;
 
@@ -13,9 +14,11 @@ pub struct Client {
 
 impl Clone for Client {
     fn clone(&self) -> Self {
-        let mut custom = rocket::Config::default();
-        custom.address = IpAddr::V4(self.params.ip_addr.parse::<Ipv4Addr>().unwrap());
-        custom.port = self.params.port.parse::<u16>().unwrap();
+        let custom = rocket::Config {
+            address: IpAddr::V4(self.params.ip_addr.parse::<Ipv4Addr>().unwrap()),
+            port: self.params.port.parse::<u16>().unwrap(),
+            ..Default::default()
+        };
         Self {
             rocket_server: rocket::custom(custom),
             params: self.params.clone(),
@@ -27,36 +30,36 @@ impl Client {
     pub fn new(
         params: ClientParams,
         endpoints: Vec<Route>,
-        prometheus : Option<ArcRwLockPrometheus>
+        prometheus: Option<ArcRwLockPrometheus>,
     ) -> Self {
         let mut custom = rocket::config::Config::release_default();
         let ip_address = params.ip_addr.parse::<Ipv4Addr>();
         let port = params.port.parse::<u16>();
-        if ip_address.is_ok() {
-            custom.address = IpAddr::V4(ip_address.unwrap());
+        if let Ok(ip) = ip_address {
+            custom.address = IpAddr::V4(ip);
         }
-        if port.is_ok() {
-            custom.port = port.unwrap();
+        if let Ok(prt) = port {
+            custom.port = prt;
         }
 
-        let rocket_server =  match prometheus {
+        let rocket_server = match prometheus {
             Some(prometheus) => {
                 rocket
-                    ::custom(custom)
+                ::custom(custom)
                     .attach(prometheus.clone())
-                    .manage(prometheus.clone())
+                    .manage(prometheus)
                     .mount("/", endpoints)
-            },
+            }
             None => {
                 rocket
-                    ::custom(custom)
+                ::custom(custom)
                     .mount("/", endpoints)
             }
         };
 
         Self {
             rocket_server,
-            params: params.clone(),
+            params,
         }
     }
 
@@ -70,7 +73,7 @@ impl Client {
         self
     }
 
-    pub async fn spawn_rocket(self) -> impl Future<Output = Result<Rocket<Ignite>, Error>> {
+    pub async fn spawn_rocket(self) -> impl Future<Output=Result<Rocket<Ignite>, Error>> {
         let rocket = match self.rocket_server.ignite().await {
             Ok(res) => res,
             Err(err) => {

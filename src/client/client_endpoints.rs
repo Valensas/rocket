@@ -30,7 +30,7 @@ impl Endpoint {
         }
     }
 
-    pub fn getRoute(self) -> Route {
+    pub fn get_route(self) -> Route {
         match self.method.as_str() {
             "POST" => Route::new(Method::Post, self.endpoint.as_str(), slm),
             "GET" => Route::new(Method::Get, self.endpoint.as_str(), self.function),
