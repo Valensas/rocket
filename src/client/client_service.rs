@@ -5,8 +5,8 @@ use std::{
     net::{IpAddr, Ipv4Addr},
 };
 
-use valensas_actuator::metrics::metrics::ArcRwLockPrometheus;
 use rocket::{fairing::Fairing, Build, Error, Ignite, Rocket, Route};
+use valensas_actuator::metrics::ArcRwLockPrometheus;
 
 use super::client_params::ClientParams;
 
