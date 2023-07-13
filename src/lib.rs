@@ -5,7 +5,7 @@
 //! ## Example Usage
 //!
 //! ```rust
-//! use valensas_prometheus::metrics::metrics::{ArcRwLockPrometheus, PrometheusMetrics};
+//! use valensas_actuator::metrics::{ArcRwLockPrometheus, PrometheusMetrics};
 //! use valensas_rocket::client::client_params::ClientParams;
 //! use valensas_rocket::client::client_service::Client;
 //! use rocket::{get, routes, Route};
@@ -36,9 +36,9 @@
 //!         Some(prometheus_fairing), // Pass the Prometheus object
 //!     )
 //!         // Optional: Set a managed state
-//!         .set_manage(SomeState)
+//!         //.set_manage(SomeState)
 //!         // Optional: Set a fairing
-//!         .set_fairing(SomeFairing)
+//!         //.set_fairing(SomeFairing)
 //!         .spawn_rocket();
 //!
 //!     rocket::tokio::task::spawn(client.await)

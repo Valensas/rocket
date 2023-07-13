@@ -11,3 +11,6 @@ valensas-actuator = "0.1.2"
 [dependencies.rocket]
 version = "=0.5.0-rc.3"
 features = ["json"]
+
+[dev-dependencies]
+tokio = "1.29.1"
