@@ -14,4 +14,4 @@ Add the following to your `Cargo.toml` file:
 
 ```toml
 [dependencies]
-valensas-rocket = "0.1.1"
+valensas-rocket = "0.1.2"
